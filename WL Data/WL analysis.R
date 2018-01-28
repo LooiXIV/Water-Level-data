@@ -44,7 +44,7 @@ post.q-pre.q
 
 SL.q = quantile(WL.Oswego$WL)
 
-# Take model parameters, and look at river height
+# Take model parameters, and look at river height:
 # is backflow related to river water level and then compare 
 # Marsh distance to river.
 # Volume of backflow or outflow, 

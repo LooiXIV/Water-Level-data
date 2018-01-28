@@ -2,33 +2,44 @@ graphics.off()
 rm(list = ls())
 # Partition the data by different waterlevel "seasons" (high, low, and mid)
 require(lubridate)
+
+# get a package only available at this URL
 source("http://www.math.mcmaster.ca/bolker/R/misc/legendx.R")
+# set working directory
 wd = paste("C:/Users/Alexander Looi/Google Drive/Dropbox/", 
            "NOAA_Wetlands_Ceili-Alex/Alex's Folder/",
            "Water level files/",sep = "")
 
 setwd(paste(wd,"WL Data", sep = ""))
 
+# specifcy file name
 F.N = list.files(pattern = "Fixed Oswego Water Level 1906-2014.csv")
 
+######################################################################
+# Do not edite code past this point #
+######################################################################
+
+# read in data
 WLs = read.csv(F.N, header = T)
-
+# format dates
 dates = mdy(WLs$Dates, tz = "EST")
+# grab just the years
 Years = as.numeric(format(dates, "%Y"))
-
+# print quartiles
 quantile(WLs$WL)
 
 # Find the quantiles for each simulated period
-
 Pre.MSD.Low = c(1933, 1942)
 Pre.MSD.High = c(1943, 1951)
 Post.MSD.Low = c(1973, 1982)
 Post.MSD.High = c(2005, 2014)
 
+# name the time periods
 all.time = c("Pre.MSD.Low", "Pre.MSD.High", 
              "Post.MSD.Low", "Post.MSD.High")
 all.time.names = c("Pre-MSD Low Precip.", "Pre-MSD High Precip.", 
                    "Post-MSD Low Precip.", "Post-MSD High Precip.")
+# create letters for each time period (used in labelling figures
 All.Letters = c("A", "B", "C", "D")
 QL = rep(0, 5)
 
@@ -36,7 +47,7 @@ Q.table = data.frame(QL, QL, QL, QL, QL)
 
 colnames(Q.table) = c(all.time, "All")
 
-# All quantile scenarios
+# Get all quantile scenarios data
 for(p in 1:4){
   
   TP = get(all.time[p])
@@ -49,7 +60,8 @@ for(p in 1:4){
   
 }
 
-# mean of all years
+# quartile of each quartile
+
 for(p in 1:4){
   
   Q.WL = WLs$WL
@@ -60,12 +72,13 @@ for(p in 1:4){
 
 BP.table = NA
 
-# seperate Pre and Post MSD only
+# seperate Pre and Post MSD only via when MSD was built
 Pre.MSD.Low = c(1933, 1951)
 Pre.MSD.High = c(1933, 1951)
 Post.MSD.Low = c(1958, 2014)
 Post.MSD.High = c(1958, 2014)
 
+#  Calculate quartiles for each year of water level data
 for(p in 1:4){
   
   TP = get(all.time[p])
@@ -86,7 +99,10 @@ for(p in 1:4){
 }
 
 BP.table = list(A, B)
-
+######################################################
+# create a box plot of the best ranges of 
+# water level data for the methods section
+######################################################
 png(filename = "Quartiles of water levels.png",
     width = 700, height = 850)
 
@@ -98,16 +114,19 @@ mtext(side = 1, line = 1.25, at = c(1,2),
       text = c("1933-1951", "1973-2014"), cex = 1.5)
 
 dev.off()
-############################################
-# Create a boxplot for the methods section
-############################################
+
+#######################################
+# the following code creates stack plots of inflows and outflow 
+# sources of water to the different wetland sites at different 
+# waterlevel quartiles specified by pre or post MSD and high and 
+# low precip. scenarios. The years specified for these quartiels 
+# are shown just below.
 
 Pre.MSD.Low = c(1933, 1942)
 Pre.MSD.High = c(1943, 1951)
 Post.MSD.Low = c(1973, 1982)
 Post.MSD.High = c(2005, 2014)
 
-#######################################
 
 Q.table[,5] = quantile(WLs$WL)
 
@@ -115,8 +134,10 @@ High.WL = Q.table[4,]
 Low.WL = Q.table[2,]
 Med.WL = Q.table[3,]
 
+# specify sites
 sites = c("BF", "CB", "DB", "DR", "DL", "PT")
 
+# find the work directory
 Q.wd = paste(wd, "Quantile Analysis", sep  = "")
 
 outputs = c("outflow", "EV", "ET")
@@ -281,6 +302,8 @@ for(w in 1:6){
     # } else if (sites[w] == "DL") {
     #   max.y = .01
     # }
+    
+    # set the x and y labels
     y.lab1 = expression("daily inflows (10"^6*"  m"^3*")")
     y.lab2 = expression("daily outflows (10"^6*"  m"^3*")")
     if(sites[w] == "DR"){
