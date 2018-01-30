@@ -16,7 +16,7 @@ setwd(paste(wd,"WL Data", sep = ""))
 F.N = list.files(pattern = "Fixed Oswego Water Level 1906-2014.csv")
 
 ######################################################################
-# Do not edite code past this point #
+# Do not edit code past this point #
 ######################################################################
 
 # read in data

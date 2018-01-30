@@ -1,6 +1,7 @@
 graphics.off();
 rm(list=ls());
 
+# set the working directory
 setwd("C:/Users/Alex Looi/Desktop/Demostration")
 
 directory = "C:/Users/Alex Looi/Desktop/Demostration"
@@ -28,7 +29,11 @@ interval = "daily_mean"
 #interval = "hourly_height"
 TZ = "LST" # goes with the "daily_mean" data set
 #TZ = "GMT" # goes with the "hourly_height" data set
+############################################################
+# Do not edit code past this point #
+############################################################
 
+# function to process the user inputs and download the raw HTML
 getWLcsv.NOAA = function(site_no, start_date, end_date, TimeZone){
   
   web = paste("http://tidesandcurrents.noaa.gov/api/datagetter?product=",interval ,
@@ -45,8 +50,7 @@ getWLcsv.NOAA = function(site_no, start_date, end_date, TimeZone){
 
 }
 
-
-
+# sort the data by year and print them out to seperate CSV files.
 for(d in 1:length(dates)){
 
   begin = paste(substr(dates[d], 1, 4), substr(dates[d], 6, 7), substr(dates[d], 9, 10), sep = "")

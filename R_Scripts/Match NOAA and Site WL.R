@@ -1,4 +1,4 @@
-# Create linear regressions between ABay WL and Site
+ Create linear regressions between ABay WL and Site
 rm(list = ls());
 graphics.off();
 require(lubridate)
